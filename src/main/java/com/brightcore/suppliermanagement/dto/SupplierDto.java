@@ -41,12 +41,11 @@ public class SupplierDto {
     @AllArgsConstructor
     @Builder
     public static class UpdateRequest {
-        @NotBlank(message = "Name is required")
-        @Size(max = 150)
+        @Size(max = 150, message = "Name must not exceed 150 characters")
         private String name;
 
-        @NotBlank(message = "Email is required")
         @Email(message = "Email must be valid")
+        @Size(max = 150)
         private String email;
 
         @Size(max = 30)

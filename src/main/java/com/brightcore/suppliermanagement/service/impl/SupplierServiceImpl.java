@@ -53,16 +53,30 @@ public class SupplierServiceImpl implements SupplierService {
         Supplier existing = supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
 
-        if (!existing.getEmail().equalsIgnoreCase(request.getEmail())
-                && supplierRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email '" + request.getEmail() + "' already in use");
+        if (request.getName() != null && !request.getName().isBlank()) {
+            existing.setName(request.getName());
         }
 
-        existing.setName(request.getName());
-        existing.setEmail(request.getEmail());
-        existing.setPhoneNumber(request.getPhoneNumber());
-        existing.setAddress(request.getAddress());
-        existing.setCompanyName(request.getCompanyName());
+        if (request.getEmail() != null && !request.getEmail().isBlank()
+                && !existing.getEmail().equalsIgnoreCase(request.getEmail())) {
+            if (supplierRepository.existsByEmail(request.getEmail())) {
+                throw new IllegalArgumentException("Email '" + request.getEmail() + "' already in use");
+            }
+            existing.setEmail(request.getEmail());
+        }
+
+        if (request.getPhoneNumber() != null) {
+            existing.setPhoneNumber(request.getPhoneNumber());
+        }
+
+        if (request.getAddress() != null) {
+            existing.setAddress(request.getAddress());
+        }
+
+        if (request.getCompanyName() != null) {
+            existing.setCompanyName(request.getCompanyName());
+        }
+
         if (request.getActive() != null) {
             existing.setActive(request.getActive());
         }
