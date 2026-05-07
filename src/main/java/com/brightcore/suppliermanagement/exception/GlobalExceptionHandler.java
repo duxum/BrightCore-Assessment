@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
                         .success(false).message("Validation failed").data(errors).build());
     }
 
+    @SuppressWarnings("unused")
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Object>> handleDataIntegrity(DataIntegrityViolationException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
